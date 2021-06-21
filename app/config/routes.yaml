@@ -1,0 +1,11 @@
+run:
+    path: /run
+    controller: App\Controller\ProcessingController::run
+    methods:    POST
+    format:      json
+
+status:
+    path: /status/{guid}
+    controller: App\Controller\ProcessingController::status
+    methods:    GET
+    format:      json

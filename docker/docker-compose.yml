@@ -1,0 +1,19 @@
+version: '3'
+services:
+    app:
+        build:
+            context: ./app
+        volumes:
+          - ../app:/var/www/app
+
+    web:
+        build:
+            context: ./web
+        environment:
+            - FASTCGI=app:9000
+        ports:
+            - "8080:80"
+        volumes:
+            - ../app:/var/www/app
+        depends_on:
+            - app
