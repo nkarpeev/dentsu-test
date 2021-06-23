@@ -5,7 +5,7 @@ run:
     format:      json
 
 status:
-    path: /status/{guid}
+    path: /status/{id}
     controller: App\Controller\ProcessingController::status
     methods:    GET
     format:      json

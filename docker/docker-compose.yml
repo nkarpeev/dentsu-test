@@ -6,14 +6,29 @@ services:
         volumes:
           - ../app:/var/www/app
 
+    consumer:
+        build:
+            context: ./app
+        volumes:
+            - ../app:/var/www/app
+        command: bash -c 'sleep 5 && php bin/console doctrine:migrations:migrate --no-interaction && php bin/console messenger:consume'
+        depends_on:
+            - app
+
     web:
         build:
             context: ./web
         environment:
             - FASTCGI=app:9000
         ports:
-            - "8080:80"
+            - "8083:80"
         volumes:
             - ../app:/var/www/app
         depends_on:
             - app
+
+    db:
+        build:
+            context: ./db
+        ports:
+        - "54032:5432"
