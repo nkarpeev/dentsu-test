@@ -20,7 +20,7 @@ class ProcessingController extends AbstractController
     {
         $msg = new Processing($request->getContent());
         $bus->dispatch($msg);
-        return $this->json($msg->getId());
+        return $this->json(['processID' => $msg->getId()]);
     }
 
     /**
@@ -34,10 +34,18 @@ class ProcessingController extends AbstractController
             ->findOneBy(['number' => $request->get('id')]);
 
         if (!$msg) {
-            return $this->json('not found');
+            $result = [
+                'status' => 404,
+                'comment' => 'process not found',
+            ];
+            return $this->json($result);
         }
 
-        return $this->json($msg->getStatus() ? 'processing is finished' : 'processing');
+        $result = [
+            'status' => $msg->getStatus(),
+            'comment' => $msg->getStatus() ? 'processing is finished' : 'processing',
+        ];
+        return $this->json($result);
     }
 
 }
